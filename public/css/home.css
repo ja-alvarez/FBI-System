@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+body {
+    background-color: black; /* Fondo negro para todo el documento */
+    color: white; /* Texto blanco para todo el documento */
+}
+

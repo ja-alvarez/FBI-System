@@ -3,15 +3,28 @@ import morgan from 'morgan';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import db from './database/config.js'
-
-const secretPassword = 'secreto'
-
+import { create } from 'express-handlebars';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const log = console.log;
+const secretPassword = 'secreto'
+
+
+// Inicio configuracion handlebars
+const hbs = create({
+	partialsDir: [
+		path.resolve(__dirname, "./views/partials/"),
+	],
+});
+
+app.engine("handlebars", hbs.engine);
+app.set("view engine", "handlebars");
+app.set("views", path.resolve(__dirname, "./views"));
+// Fin configuracion handlebars
+
 
 // MIDDLEWARES GENERALES
 app.use(express.json());
@@ -24,8 +37,13 @@ app.use(express.static('public'));
 
 //RUTA PÁGINA PRINCIPAL
 app.get('/', (req, res) => {
-    res.sendFile(path.resolve(__dirname, './public/index.html'));
+    res.render('home',  { layout: 'home' })
 });
+
+app.get('/login', (req, res) => {
+    res.render('login')
+});
+
 
 app.post('/SignIn', async (req, res) => {
     try {
