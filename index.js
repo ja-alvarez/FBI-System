@@ -28,18 +28,25 @@ app.get('/', (req, res) => {
 app.post('/SignIn', async (req, res) => {
     try {
         let { email, password } = req.body;
-        log (email, password)
+        //log (email, password)
         if (!email || !password) {
             return res.status(400).json({message: 'Debe proporcionar todos los datos para la autenticación.'})
         }
+        //Verificar usuario
         let consulta = {
-            text: 'SELECT email, password FROM usuarios WHERE email = $1',
-            values: [email]
+            text: 'SELECT id, email FROM usuarios WHERE email = $1 AND password = $2',
+            values: [email, password]
         };
         let respuesta = await db.query(consulta)
         //log('RESPUESTA: ', respuesta.rows)
         //log('Email:', respuesta.rows[0].email, 'Password:', respuesta.rows[0].password);
-        res.status(200).json(respuesta.rows);
+        let usuario = respuesta.rows[0]
+        if (!usuario) {
+            return res.status(400).json({
+                message: "Credenciales inválidas."
+            })
+        };
+        res.status(200).json({data: respuesta.rows, message: 'Login correcto.'});
     } catch (error) {
         log(error.message)
         res.status(500).json({message: 'Error interno del servidor.'})
