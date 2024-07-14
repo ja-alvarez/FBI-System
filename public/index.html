@@ -10,24 +10,28 @@
 </head>
 
 <body>
-    <h1>&#128374; FBI System &#128374;</h1>
-    <div class="card bg-dark text-center">
-        <div class="card-body">
-            <form action="/SignIn" method="post">
-                <h1>&#128372;&#128372;&#128372;</h1>
-                <h5 class="card-title text-center">Ingrese sus credenciales</h5>
-                <div class="row d-flex align-items-center mb-1">
-                    <div class="col-12">Email:</div>
-                    <div class="col-7 m-auto"><input type="text" name="email" class="form-control" /></div>
-                </div>
-                <div class="row d-flex align-items-center">
-                    <div class="col-12">Password:</div>
-                    <div class="col-7 m-auto"><input type="password" name="password" class="form-control" /></div>
-                </div>
-                <button class="btn bg-light my-3">Ingresar &#128373;</button>
-            </form>
+    <main class="mt-5">
+        <h1>&#128374; FBI System &#128374;</h1>
+        <div class="card bg-dark text-center">
+            <div class="card-body">
+                <form action="/SignIn" method="post" id="signInForm">
+                    <h1>&#128372;&#128372;&#128372;</h1>
+                    <h5 class="card-title text-center">Ingrese sus credenciales</h5>
+                    <div class="row d-flex align-items-center mb-1">
+                        <div class="col-12">Email:</div>
+                        <div class="col-7 m-auto"><input type="text" name="email" id="email" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="col-12">Password:</div>
+                        <div class="col-7 m-auto"><input type="password" name="password" id="password"
+                                class="form-control" /></div>
+                    </div>
+                    <button class="btn bg-light my-3">Ingresar &#128373;</button>
+                </form>
+            </div>
         </div>
-    </div>
+    </main>
 
     <style>
         * {
@@ -45,6 +49,38 @@
             height: 60vh;
         }
     </style>
+    
+    <script>
+        document.getElementById('signInForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                const response = await fetch('http://localhost:3000/SignIn', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', result.token);
+                    alert('Inicio de sesión exitoso.');
+                    console.log('datos usuario: ', result.data);
+                } else {
+                    alert(result.message)
+                }
+            } catch (error) {
+                console.error('Error al iniciar sesión:', error);
+                alert('Error al iniciar sesión.')
+            }
+        });
+
+        const token = localStorage.getItem('token');
+
+    </script>
 </body>
 
 </html>
