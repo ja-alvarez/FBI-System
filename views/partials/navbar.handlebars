@@ -1,28 +1,70 @@
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <div class="container-fluid">
-            <a class="navbar-brand text-center d-flex align-items-center" href="/">
-                <h1>&#128374; FBI System &#128374;</h1>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-5 ms-auto">
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="/perfil/1">Perfil</a>
-                    </li>
-                </ul>
-            </div>
-{{!--             Botón Logout
-            <button class="btn btn-outline-light" type="button">Logout</button> --}}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <div class="container-fluid">
+        <a class="navbar-brand text-center d-flex align-items-center" href="/">
+            <h1>&#128374; FBI System &#128374;</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-5 ms-auto">
+                <li id="homeLink" class="nav-item mx-3">
+                    <a class="nav-link" aria-current="page" href="/">Home</a>
+                </li>
+                <li id="perfilLink" class="nav-item mx-3" style="display: none;">
+                    <a id="perfil" class="nav-link" href="/perfil">Perfil</a>
+                </li>
+
+                <li id="loginLink" class="nav-item mx-3">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li id="logoutLink" class="nav-item mx-3" style="display: none;">
+                    <a id="logout" class="nav-link" href="">Logout</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+        {{!-- Botón Logout
+        <button class="btn btn-outline-light" type="button">Logout</button> --}}
+    </div>
+</nav>
 
 {{!-- Home publico, cualquiera puede entrar --}}
+
+<script>
+    const homeLink = document.getElementById("homeLink");
+    const perfilLink = document.getElementById("perfilLink");
+    const loginLink = document.getElementById("loginLink");
+    const logoutLink = document.getElementById("logoutLink");
+
+    const logout = document.getElementById("logout");
+    const perfil = document.getElementById("perfil");
+
+    let token = localStorage.getItem("token");
+    if (token) {
+        loginLink.style.display = "none";
+        logoutLink.style.display = "block";
+        perfilLink.style.display = "block";
+    }
+    // else {}
+
+    logout.addEventListener("click", (event) => {
+        event.preventDefault();
+        let confirmacion = confirm("¿Está seguro de cerrar sesión?")
+        if (confirmacion) {
+            localStorage.removeItem("token");
+            //location.reload();
+            alert("Sesión cerrada correctamente.")
+            setTimeout(() => {
+                location.href = "/";
+            }, 500)
+        }
+    });
+
+    perfil.addEventListener("click", (event) => {
+        event.preventDefault();
+        
+        location.href = "/perfil?token="+token;
+    });
+
+</script>
