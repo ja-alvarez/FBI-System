@@ -1,8 +1,9 @@
-<main class="mt-5">
-    <h1>&#128374; FBI System &#128374;</h1>
+<main class="mt-5" id="login">
+
     <div class="card bg-dark text-center">
         <div class="card-body">
-            <form action="/SignIn" method="post" id="signInForm">
+            <form id="formLogin">
+                {{!-- action="/SignIn" method="post" --}}
                 <h1>&#128372;&#128372;&#128372;</h1>
                 <h5 class="card-title text-center">Ingrese sus credenciales</h5>
                 <div class="row d-flex align-items-center mb-1">
@@ -23,33 +24,31 @@
 </main>
 
 <script>
-    document.getElementById('signInForm').addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        try {
-            const response = await fetch('http://localhost:3000/SignIn', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-            const result = await response.json();
 
-            if (response.ok) {
-                localStorage.setItem('token', result.token);
-                alert('Inicio de sesión exitoso.');
-                console.log('datos usuario: ', result.data);
+    const formLogin = document.getElementById('formLogin')
+    formLogin.addEventListener('submit', async (event) => {
+        try {
+            event.preventDefault();
+            let formData = new FormData(formLogin);
+
+            let response = await fetch("/api/v1/SignIn", {
+                method: "POST",
+                body: formData
+            });
+            
+            let data = await response.json();
+            if (response.status == 200) {
+                alert(data.message)
+                console.log(data.token)
             } else {
-                alert(result.message)
+                alert(data.message)
             }
         } catch (error) {
-            console.error('Error al iniciar sesión:', error);
-            alert('Error al iniciar sesión.')
+            alert("Error en proceso de login.")
         }
     });
 
-    const token = localStorage.getItem('token');
+
+
 
 </script>

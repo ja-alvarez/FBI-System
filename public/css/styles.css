@@ -5,11 +5,18 @@
 }
 
 body {
-    background: black;
+    background: rgb(33 37 41);
+    color: white;
+}
 
+#login {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     height: 60vh;
+}
+
+a.nav-link {
+    color: white;
 }

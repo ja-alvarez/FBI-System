@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
+import fileUpload from 'express-fileupload';
 import db from './database/config.js'
 import { create } from 'express-handlebars';
 import * as path from 'path';
@@ -11,7 +12,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const log = console.log;
 const secretPassword = 'secreto'
-
 
 // Inicio configuracion handlebars
 const hbs = create({
@@ -28,8 +28,9 @@ app.set("views", path.resolve(__dirname, "./views"));
 
 // MIDDLEWARES GENERALES
 app.use(express.json());
-app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload()); //permite procesar ademas de imagenes, data recibidos del formdata
+app.use(morgan('tiny'));
 
 //DEJAR PÚBLICA LA CARPETA PUBLIC
 app.use(express.static('public'));
@@ -37,21 +38,33 @@ app.use(express.static('public'));
 
 //RUTA PÁGINA PRINCIPAL
 app.get('/', (req, res) => {
-    res.render('home',  { layout: 'home' })
+    res.render('home') //,  { layout: 'home' }
 });
 
 app.get('/login', (req, res) => {
     res.render('login')
 });
 
-
-app.post('/SignIn', async (req, res) => {
+app.get('/perfil/:id', (req, res) => {
     try {
+        res.render('perfil')
+    } catch (error) {
+        res.render('perfil', {
+            error: 'Error'
+        })
+    }
+});
+ 
+
+
+app.post('/api/v1/SignIn', async (req, res) => {
+    try { 
         let { email, password } = req.body;
+        log('email: ', email, 'password', password)
         //Verificar que lleguen los datos
         if (!email || !password) {
             return res.status(400).json({ message: 'Debe proporcionar todos los datos para la autenticación.' })
-        }
+        } 
         //Verificar si el usuario existe
         let consulta = {
             text: 'SELECT id, email FROM usuarios WHERE email = $1 AND password = $2',
@@ -66,7 +79,6 @@ app.post('/SignIn', async (req, res) => {
                 message: "Credenciales inválidas."
             })
         };
-
         //Generación token jwt
         const token = jwt.sign(usuario, secretPassword)
         // redirect
@@ -76,7 +88,6 @@ app.post('/SignIn', async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor.' })
     }
 });
-
 
 const verificarToken = (req, res, next) => {
     try {
@@ -96,8 +107,7 @@ const verificarToken = (req, res, next) => {
             message: 'Debe proporcionar un token válido.'
         })
     }
-
-}
+};
 
 // Ruta protegida -> Permite obtener la informacion de un usuario por su id
 app.get('/api/v1/usuarios/:id', verificarToken, async (req, res) => {
@@ -122,7 +132,6 @@ app.get('/api/v1/usuarios/:id', verificarToken, async (req, res) => {
         res.json({
             usuario
         });
-
     } catch (error) {
         log(error.message)
         res.status(500).json({
@@ -131,7 +140,7 @@ app.get('/api/v1/usuarios/:id', verificarToken, async (req, res) => {
     }
 }); 
 
-
 app.listen(3000, () => {
     log('Servidor escuchando en http://localhost:3000')
-})
+});
+
