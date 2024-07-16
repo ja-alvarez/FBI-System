@@ -8,7 +8,7 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
-    "author": "",
+    "author": "Juan Alvarez - github: @ja-alvarez",
     "license": "ISC",
     "dependencies": {
         "express": "^4.19.2",

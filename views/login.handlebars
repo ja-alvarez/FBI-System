@@ -1,5 +1,4 @@
 <main class="mt-5" id="login">
-
     <div class="card bg-dark text-center">
         <div class="card-body">
             <form id="formLogin">
@@ -24,24 +23,25 @@
 </main>
 
 <script>
-
     const formLogin = document.getElementById('formLogin')
     formLogin.addEventListener('submit', async (event) => {
         try {
             event.preventDefault();
             let formData = new FormData(formLogin);
-
             let response = await fetch("/api/v1/SignIn", {
                 method: "POST",
                 body: formData
             });
-
             let data = await response.json();
             if (response.status == 200) {
                 alert(data.message)
+
+                // Guardar token/usuario en el almacenamiento local
                 localStorage.setItem("token", data.token)
+                localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
                 //console.log(data.token)
-                location.href="/perfil?token="+data.token
+                location.href = "/perfil?token=" + data.token
             } else {
                 alert(data.message)
                 localStorage.removeItem("token")
@@ -49,11 +49,6 @@
         } catch (error) {
             alert("Error en proceso de login.")
             localStorage.removeItem("token")
-
         }
     });
-
-
-
-
 </script>

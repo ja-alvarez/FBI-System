@@ -1,8 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <div class="container-fluid">
-        <a class="navbar-brand text-center d-flex align-items-center" href="/">
-            <h1>&#128374; FBI System &#128374;</h1>
-        </a>
+        <div>
+            <a class="navbar-brand text-center d-flex align-items-center" href="/">
+                <h1>&#128374; FBI System &#128374;</span></h1>
+            </a>
+            <h5<span id="brand"></span></h5>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,6 +25,25 @@
                 <li id="logoutLink" class="nav-item mx-3" style="display: none;">
                     <a id="logout" class="nav-link" href="">Logout</a>
                 </li>
+
+                <li id="administracionLinks" class="nav-item dropdown" style="display: none;">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Administración
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a id="adminUsuarios" class="dropdown-item" href="/administracion/usuarios">Usuarios</a>
+                        </li>
+                        {{!-- <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li> --}}
+                    </ul>
+                </li>
+
+
+
             </ul>
         </div>
         {{!-- Botón Logout
@@ -36,11 +58,18 @@
     const perfilLink = document.getElementById("perfilLink");
     const loginLink = document.getElementById("loginLink");
     const logoutLink = document.getElementById("logoutLink");
+    const administracionLinks = document.getElementById("administracionLinks");
+
+    
 
     const logout = document.getElementById("logout");
     const perfil = document.getElementById("perfil");
+    const adminUsuarios = document.getElementById("adminUsuarios");
 
     let token = localStorage.getItem("token");
+    let usuario = JSON.parse(localStorage.getItem("usuario"));
+
+
     if (token) {
         loginLink.style.display = "none";
         logoutLink.style.display = "block";
@@ -48,13 +77,23 @@
     }
     // else {}
 
+    if (usuario) {
+        document.getElementById("brand").innerText = "Bienvenido " + usuario.email;
+        if (usuario.admin) {
+            administracionLinks.style.display = "block";
+        }
+    }
+
+
     logout.addEventListener("click", (event) => {
         event.preventDefault();
         let confirmacion = confirm("¿Está seguro de cerrar sesión?")
         if (confirmacion) {
             localStorage.removeItem("token");
-            //location.reload();
-            alert("Sesión cerrada correctamente.")
+            localStorage.removeItem("usuario");
+
+                //location.reload();
+            //alert("Sesión cerrada correctamente.")
             setTimeout(() => {
                 location.href = "/";
             }, 500)
@@ -63,8 +102,13 @@
 
     perfil.addEventListener("click", (event) => {
         event.preventDefault();
-        
-        location.href = "/perfil?token="+token;
+        location.href = "/perfil?token=" + token;
+    });
+
+
+    adminUsuarios.addEventListener("click", (event) => {
+        event.preventDefault();
+        location.href = "/administracion/usuarios?token=" + token;
     });
 
 </script>

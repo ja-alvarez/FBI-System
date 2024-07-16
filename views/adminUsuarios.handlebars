@@ -1,0 +1,63 @@
+<header class="py-3">
+    <h1 class="text-center">Administración de usuarios</h1>
+</header>
+
+<main class="container">
+    {{#if error}}
+    <section>
+        <h2 class="text-center">{{error}}</h2>
+        <button class="btn btn-primary"><a href="/" style="color:white; text-decoration: none;">Volver a la vista
+                principal</a></button>
+    </section>
+
+    {{else}}
+    <section>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id:</th>
+                    <th scope="col">Email:</th>
+                    <th scope="col">Admin:</th>
+                    <th scope="col">Acciones:</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each usuarios}}
+                <tr>
+                    <th scope="row">{{this.id}}</th>
+                    <td>{{this.email}}</td>
+                    <td>{{this.admin}}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="cambiarEstadoAdmin({{id}})">Cambiar admin</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+    {{/if}}
+</main>
+
+<script>
+    const cambiarEstadoAdmin = async (id) => {
+        try {
+            let token = localStorage.getItem("token");
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${token}`)
+
+            let response = await fetch('/api/v1/usuarios/admin/' + id, {
+                method: 'PUT',
+                headers: myHeaders
+            });
+            let data = await response.json();
+            alert(data.message);
+            if (response.status == 201) {
+                location.reload();
+            }
+        } catch (error) {
+            console.log('ERROR: ', error)
+            alert("Error al intentar cambiar estado del usuario con id:" + id);
+        }
+    };
+
+</script>

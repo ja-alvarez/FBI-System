@@ -1,13 +1,13 @@
 <main class="container">
+    {{#if error}}
+    <section>
+        <h2>{{error}}</h2>
+    </section>
+    {{else}}
     <section>
         <h3>Datos Usuario:</h3>
         <p>Id: {{usuario.id}}</p>
         <p>Email: {{usuario.email}}</p>
     </section>
+    {{/if}}
 </main>
-
-<script>
-
-    alert("Bienvenido " + "{{usuario.email}}")
-
-</script>
