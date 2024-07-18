@@ -6,13 +6,13 @@
     {{#if error}}
     <section>
         <h2 class="text-center">{{error}}</h2>
-        <button class="btn btn-primary"><a href="/" style="color:white; text-decoration: none;">Volver a la vista
+        <button class="btn btn-dark"><a href="/" style="color:white; text-decoration: none; ">Volver a la vista
                 principal</a></button>
     </section>
 
     {{else}}
     <section>
-        <table class="table">
+        <table class="table custom-table">
             <thead>
                 <tr>
                     <th scope="col">Id:</th>
@@ -28,7 +28,7 @@
                     <td>{{this.email}}</td>
                     <td>{{this.admin}}</td>
                     <td>
-                        <button class="btn btn-success" onclick="cambiarEstadoAdmin({{id}})">Cambiar admin</button>
+                        <button class="btn custom-btn-table" onclick="cambiarEstadoAdmin({{id}})">Cambiar admin</button>
                     </td>
                 </tr>
                 {{/each}}

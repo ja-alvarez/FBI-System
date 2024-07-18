@@ -2,6 +2,8 @@ import express from 'express';
 import morgan from 'morgan';
 import jwt from 'jsonwebtoken';
 import fileUpload from 'express-fileupload';
+import dotenv from 'dotenv';
+dotenv.config();
 import db from './database/config.js'
 import { create } from 'express-handlebars';
 import * as path from 'path';
@@ -10,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const log = console.log;
-const secretPassword = 'secreto'
+const secretPassword = process.env.SECRET_PASSWORD;
 
 // Inicio configuracion handlebars
 const hbs = create({
@@ -228,6 +230,12 @@ app.put('/api/v1/usuarios/admin/:id', verificarToken, async (req, res) => {
             message: 'Ha ocurrido un error al intentar cambiar el estado del usuario.'
         })
     }
+});
+
+
+
+app.all('/api/*', (req, res) => {
+    res.status(404).json({message: 'El recurso no existe, verifique la documentación.' })
 });
 
 app.get('*', (req, res) => {

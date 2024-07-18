@@ -1,14 +1,52 @@
 * {
     margin: 0;
     padding: 0;
-    color: white;
+    /* color: white; */
 }
 
 body {
-    background: rgb(33 37 41);
+    background: black;
     color: white;
 }
 
+/* Estilos navbar */
+.custom-navbar {
+    background-color: black; /* Fondo del navbar */
+}
+
+.custom-navbar .custom-brand,
+.custom-navbar .nav-link,
+.custom-navbar .dropdown-toggle {
+    color: white; /* Color del texto */
+}
+
+.custom-navbar .custom-link:hover,
+.custom-navbar .dropdown-toggle:hover {
+    color: gray; /* Color del texto al pasar el ratón */
+}
+
+.custom-navbar .custom-toggler {
+    border-color: white; /* Color del borde del botón del toggler */
+}
+
+.custom-navbar .custom-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28white, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/ %3E%3C/svg%3E");
+}
+
+.custom-navbar .custom-dropdown {
+    background-color: black; /* Fondo del dropdown */
+}
+
+.custom-navbar .custom-dropdown-item {
+    color: white; /* Color del texto del dropdown */
+}
+
+.custom-navbar .custom-dropdown-item:hover {
+    background-color: gray; /* Fondo del dropdown al pasar el ratón */
+    color: black; /* Color del texto del dropdown al pasar el ratón */
+}
+
+/* Estilos login */
 #login {
     display: flex;
     align-items: center;
@@ -17,6 +55,61 @@ body {
     height: 60vh;
 }
 
-a.nav-link {
-    color: white;
+.custom-login {
+    color: white; /* Color del texto del login */
 }
+
+.custom-card {
+    background-color: black; /* Fondo de la tarjeta */
+}
+
+.custom-title,
+.custom-label {
+    color: white; /* Color del título y las etiquetas */
+}
+
+.custom-input {
+    background-color: black; /* Fondo de los inputs */
+    color: white; /* Color del texto de los inputs */
+    border: 1px solid white; /* Borde de los inputs */
+}
+
+.custom-input::placeholder {
+    color: gray; /* Color del texto del placeholder */
+}
+
+.custom-btn {
+    background-color: white; /* Fondo del botón */
+    color: black; /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.custom-btn:hover {
+    background-color: gray; /* Fondo del botón al pasar el ratón */
+    color: white; /* Color del texto del botón al pasar el ratón */
+}
+
+/* Estilos tabla usuarios */
+
+.custom-table {
+    background-color: black; /* Fondo de la tabla */
+    color: white; /* Color del texto de la tabla */
+    border: 1px solid white; /* Borde de la tabla */
+}
+
+.custom-table th,
+.custom-table td {
+    border: 1px solid white; /* Borde de las celdas */
+}
+
+.custom-btn-table {
+    background-color: black; /* Fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: 1px solid white; /* Borde del botón */
+}
+
+.custom-btn-table:hover {
+    background-color: gray; /* Fondo del botón al pasar el ratón */
+    color: black; /* Color del texto del botón al pasar el ratón */
+}
+
